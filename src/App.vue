@@ -8,9 +8,8 @@
         </div>
 
         <div v-else>
-            <label>Zaloguj się e-mailem</label>
-            <input type="email" v-model="email">
-            <button @click="logMeIn()">Wchodzę</button>
+            <login-form @login="logMeIn($event)"></login-form>
+
         </div>
 
     </div>
@@ -19,7 +18,9 @@
 
 <script>
     import "milligram";
+    import LoginForm from "./LoginForm";
     export default {
+        components: {LoginForm},
         data() {
             return {
                 authenticatedUsername: '',
@@ -27,8 +28,8 @@
             }
         },
         methods: {
-            logMeIn() {
-                this.authenticatedUsername = this.email;
+            logMeIn(username) {
+                this.authenticatedUsername = username;
                 this.email = '';
             },
             logMeOut() {
