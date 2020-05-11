@@ -1,42 +1,34 @@
 <template>
     <div>
-        <h1>Witaj w systemie do zapisów na zajęcia</h1>
+        <h1>System do zapisów na zajęcia</h1>
 
         <div v-if="authenticatedUsername">
-            <h2>Witaj {{ authenticatedUsername }}</h2>
-            <a @click="logMeOut()">Wyloguj</a>
+            <user-panel :username="authenticatedUsername" @logout="logMeOut()"></user-panel>
         </div>
 
         <div v-else>
-            <login-form @login="logMeIn($event)" button-label="Zaloguj się">
-
-            </login-form>
-
-            <login-form @login="logMeIn($event)" button-label="Wejdź"></login-form>
-            <login-form @login="logMeIn($event)" button-label="Wleć"></login-form>
-            <login-form @login="logMeIn($event)" :button-label="Math.random() < 0.5 ? 'Etykieta A' : 'Etykieta B'"></login-form>
-
+            <login-form @login="logMeIn($event)"></login-form>
         </div>
+        <meetings-page v-show="authenticatedUsername" :user="authenticatedUsername"></meetings-page>
 
     </div>
 </template>
 
-
 <script>
     import "milligram";
     import LoginForm from "./LoginForm";
+    import UserPanel from "./UserPanel";
+    import MeetingsPage from "./meetings/MeetingsPage";
     export default {
-        components: {LoginForm},
+        components: {LoginForm, MeetingsPage, UserPanel},
         data() {
             return {
                 authenticatedUsername: '',
-                email: ''
-            }
+            };
         },
         methods: {
             logMeIn(username) {
                 this.authenticatedUsername = username;
-                this.email = '';
             },
             logMeOut() {
                 this.authenticatedUsername = '';
